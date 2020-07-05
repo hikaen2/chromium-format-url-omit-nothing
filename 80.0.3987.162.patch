@@ -1,5 +1,3 @@
-diff --git a/components/omnibox/browser/location_bar_model_impl.cc b/components/omnibox/browser/location_bar_model_impl.cc
-index 2717f7fc6..43317cd91 100644
 --- a/components/omnibox/browser/location_bar_model_impl.cc
 +++ b/components/omnibox/browser/location_bar_model_impl.cc
 @@ -45,32 +45,11 @@ LocationBarModelImpl::~LocationBarModelImpl() {}
