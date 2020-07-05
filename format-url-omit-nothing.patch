@@ -1,0 +1,39 @@
+diff --git a/components/omnibox/browser/location_bar_model_impl.cc b/components/omnibox/browser/location_bar_model_impl.cc
+index 2717f7fc6..43317cd91 100644
+--- a/components/omnibox/browser/location_bar_model_impl.cc
++++ b/components/omnibox/browser/location_bar_model_impl.cc
+@@ -45,32 +45,11 @@ LocationBarModelImpl::~LocationBarModelImpl() {}
+ 
+ // LocationBarModelImpl Implementation.
+ base::string16 LocationBarModelImpl::GetFormattedFullURL() const {
+-  return GetFormattedURL(url_formatter::kFormatUrlOmitDefaults);
++  return GetFormattedURL(url_formatter::kFormatUrlOmitNothing);
+ }
+ 
+ base::string16 LocationBarModelImpl::GetURLForDisplay() const {
+-  url_formatter::FormatUrlTypes format_types =
+-      url_formatter::kFormatUrlOmitDefaults;
+-
+-  // Early exit to prevent elision of URLs when relevant extension is enabled.
+-  if (delegate_->ShouldPreventElision()) {
+-    return GetFormattedURL(format_types);
+-  }
+-
+-#if defined(OS_IOS)
+-  format_types |= url_formatter::kFormatUrlTrimAfterHost;
+-#endif
+-
+-  if (OmniboxFieldTrial::IsHideSteadyStateUrlSchemeEnabled())
+-    format_types |= url_formatter::kFormatUrlOmitHTTPS;
+-
+-  if (OmniboxFieldTrial::IsHideSteadyStateUrlTrivialSubdomainsEnabled())
+-    format_types |= url_formatter::kFormatUrlOmitTrivialSubdomains;
+-
+-  if (base::FeatureList::IsEnabled(omnibox::kHideFileUrlScheme))
+-    format_types |= url_formatter::kFormatUrlOmitFileScheme;
+-
+-  return GetFormattedURL(format_types);
++  return GetFormattedURL(url_formatter::kFormatUrlOmitNothing);
+ }
+ 
+ base::string16 LocationBarModelImpl::GetFormattedURL(
