@@ -1,0 +1,35 @@
+--- a/components/omnibox/browser/location_bar_model_impl.cc
++++ b/components/omnibox/browser/location_bar_model_impl.cc
+@@ -47,30 +47,11 @@
+ 
+ // LocationBarModelImpl Implementation.
+ base::string16 LocationBarModelImpl::GetFormattedFullURL() const {
+-  return GetFormattedURL(url_formatter::kFormatUrlOmitDefaults);
++  return GetFormattedURL(url_formatter::kFormatUrlOmitNothing);
+ }
+ 
+ base::string16 LocationBarModelImpl::GetURLForDisplay() const {
+-  url_formatter::FormatUrlTypes format_types =
+-      url_formatter::kFormatUrlOmitDefaults;
+-  if (delegate_->ShouldTrimDisplayUrlAfterHostName()) {
+-    format_types |= url_formatter::kFormatUrlTrimAfterHost;
+-  }
+-
+-#if defined(OS_IOS)
+-  format_types |= url_formatter::kFormatUrlTrimAfterHost;
+-#endif
+-
+-  if (OmniboxFieldTrial::IsHideSteadyStateUrlSchemeEnabled())
+-    format_types |= url_formatter::kFormatUrlOmitHTTPS;
+-
+-  if (OmniboxFieldTrial::IsHideSteadyStateUrlTrivialSubdomainsEnabled())
+-    format_types |= url_formatter::kFormatUrlOmitTrivialSubdomains;
+-
+-  if (base::FeatureList::IsEnabled(omnibox::kHideFileUrlScheme))
+-    format_types |= url_formatter::kFormatUrlOmitFileScheme;
+-
+-  return GetFormattedURL(format_types);
++  return GetFormattedURL(url_formatter::kFormatUrlOmitNothing);
+ }
+ 
+ base::string16 LocationBarModelImpl::GetFormattedURL(
