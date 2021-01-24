@@ -1,6 +1,6 @@
 --- a/components/omnibox/browser/location_bar_model_impl.cc
 +++ b/components/omnibox/browser/location_bar_model_impl.cc
-@@ -47,30 +47,11 @@
+@@ -44,37 +44,11 @@
  
  // LocationBarModelImpl Implementation.
  base::string16 LocationBarModelImpl::GetFormattedFullURL() const {
@@ -19,14 +19,21 @@
 -  format_types |= url_formatter::kFormatUrlTrimAfterHost;
 -#endif
 -
--  if (OmniboxFieldTrial::IsHideSteadyStateUrlSchemeEnabled())
--    format_types |= url_formatter::kFormatUrlOmitHTTPS;
--
--  if (OmniboxFieldTrial::IsHideSteadyStateUrlTrivialSubdomainsEnabled())
--    format_types |= url_formatter::kFormatUrlOmitTrivialSubdomains;
+-  format_types |= url_formatter::kFormatUrlOmitHTTPS;
+-  format_types |= url_formatter::kFormatUrlOmitTrivialSubdomains;
 -
 -  if (base::FeatureList::IsEnabled(omnibox::kHideFileUrlScheme))
 -    format_types |= url_formatter::kFormatUrlOmitFileScheme;
+-
+-  if (dom_distiller::url_utils::IsDistilledPage(GetURL())) {
+-    // We explicitly elide the scheme here to ensure that HTTPS and HTTP will
+-    // be removed for display: Reader mode pages should not display a scheme,
+-    // and should only run on HTTP/HTTPS pages.
+-    // Users will be able to see the scheme when the URL is focused or being
+-    // edited in the omnibox.
+-    format_types |= url_formatter::kFormatUrlOmitHTTP;
+-    format_types |= url_formatter::kFormatUrlOmitHTTPS;
+-  }
 -
 -  return GetFormattedURL(format_types);
 +  return GetFormattedURL(url_formatter::kFormatUrlOmitNothing);
